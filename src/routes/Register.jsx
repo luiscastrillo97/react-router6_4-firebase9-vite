@@ -1,19 +1,18 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { registerUser } from "../config/firebase";
 import { useUserContext } from "../hooks/useUserContext";
-import { useEffect, useState } from "react";
-import { signInUser } from "../config/firebase";
 import { useRedirectActiveUser } from "../hooks/useRedirectActiveUser";
 
-const Login = () => {
-    const { user } = useUserContext();
-    useRedirectActiveUser(user, "/");
+const Register = () => {
     const [email, setEmail] = useState("");
+    useRedirectActiveUser(user, "/");
     const [password, setPassword] = useState("");
+    const { user } = useUserContext();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const credentials = await signInUser({ email, password });
+            const credentialUser = await registerUser({ email, password });
             navigate("/");
         } catch (error) {
             console.log(error.code);
@@ -26,7 +25,7 @@ const Login = () => {
 
     return (
         <>
-            <h2>Login</h2>
+            <h2>Register</h2>
             <form onSubmit={handleSubmit}>
                 <input
                     type="email"
@@ -36,14 +35,14 @@ const Login = () => {
                 />
                 <input
                     type="password"
-                    placeholder="Ingrese password..."
+                    placeholder="Ingrese contraseña..."
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                 />
-                <button type="submit">Sign In</button>
+                <button type="submit">Sign Up</button>
             </form>
         </>
     );
 };
 
-export default Login;
+export default Register;
