@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../hooks/useUserContext";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { signInUser } from "../config/firebase";
 import { useRedirectActiveUser } from "../hooks/useRedirectActiveUser";
 
@@ -9,11 +9,12 @@ const Login = () => {
     useRedirectActiveUser(user, "/");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const credentials = await signInUser({ email, password });
+            await signInUser({ email, password });
             navigate("/");
         } catch (error) {
             console.log(error.code);
@@ -26,17 +27,17 @@ const Login = () => {
 
     return (
         <>
-            <h2>Login</h2>
+            <h2>Sing In</h2>
             <form onSubmit={handleSubmit}>
                 <input
                     type="email"
-                    placeholder="Ingrese email..."
+                    placeholder="Email *"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                 />
                 <input
                     type="password"
-                    placeholder="Ingrese password..."
+                    placeholder="Password *"
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                 />
