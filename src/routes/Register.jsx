@@ -4,9 +4,18 @@ import { useUserContext } from "../hooks/useUserContext";
 import { useRedirectActiveUser } from "../hooks/useRedirectActiveUser";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { errorsFirebase } from "../utils/errorsFirebase";
+import FormError from "../components/FormError";
+import { formValidate } from "../utils/formValidate";
+import FormInput from "../components/FormInput";
 
 const Register = () => {
+    const { required, patternEmail, minLength, validateEmpty, validateEquals } =
+        formValidate();
     const { user } = useUserContext();
+    if (user) {
+        return <h2>Loading app...</h2>;
+    }
     useRedirectActiveUser(user, "/");
     const navigate = useNavigate();
 
@@ -27,73 +36,45 @@ const Register = () => {
             navigate("/");
         } catch (error) {
             console.log(error.code);
-            switch (error.code) {
-                case "auth/email-already-in-use":
-                    setError("email", {
-                        message: "User already registered",
-                    });
-                    break;
-                case "auth/invalid-email":
-                    setError("email", {
-                        message: "Invalid email",
-                    });
-                    break;
-                default:
-                    console.log("Sorry. Try later");
-            }
+            const { code, message } = errorsFirebase(error.code);
+            setError(code, { message });
         }
     };
-
-    if (user) {
-        return <h2>Loading app...</h2>;
-    }
 
     return (
         <>
             <h2>Sign Up</h2>
+
             <form onSubmit={handleSubmit(onSubmit)}>
-                <input
+                <FormInput
                     type="email"
                     placeholder="Email Address*"
                     {...register("email", {
-                        required: { value: true, message: "Required field" },
-                        pattern: {
-                            value: /[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})/,
-                            message: "Invalid email",
-                        },
+                        required,
+                        pattern: patternEmail,
                     })}
-                    // value={email}
-                    // onChange={(event) => setEmail(event.target.value)}
-                />
-                {errors?.email && <p>{errors?.email.message}</p>}
-                <input
+                >
+                    <FormError error={errors?.email} />
+                </FormInput>
+                <FormInput
                     type="password"
                     placeholder="Password *"
                     {...register("password", {
-                        minLength: { value: 6, message: "Min 6 characters" },
-                        validate: {
-                            empty: (value) =>
-                                !value.trim()
-                                    ? "No seas 🤡 escribe algo"
-                                    : true,
-                        },
+                        minLength,
+                        validate: validateEmpty,
                     })}
-                    // value={password}
-                    // onChange={(event) => setPassword(event.target.value)}
-                />
-                {errors?.password && <p>{errors?.password.message}</p>}
-                <input
+                >
+                    <FormError error={errors?.password} />
+                </FormInput>
+                <FormInput
                     type="password"
                     placeholder="Password again *"
                     {...register("repassword", {
-                        validate: {
-                            equals: (value) =>
-                                value === getValues("password") ||
-                                "Passwords do not match",
-                        },
+                        validate: validateEquals(getValues),
                     })}
-                />
-                {errors?.repassword && <p>{errors?.repassword.message}</p>}
+                >
+                    <FormError error={errors?.repassword} />
+                </FormInput>
                 <button type="submit">Sign Up</button>
             </form>
         </>
