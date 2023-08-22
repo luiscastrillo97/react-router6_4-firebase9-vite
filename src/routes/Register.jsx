@@ -8,10 +8,17 @@ import { errorsFirebase } from "../utils/errorsFirebase";
 import FormError from "../components/FormError";
 import { formValidate } from "../utils/formValidate";
 import FormInput from "../components/FormInput";
+import FormTitle from "../components/FormTitle";
+import FormButton from "../components/FormButton";
 
 const Register = () => {
-    const { required, patternEmail, minLength, validateEmpty, validateEquals } =
-        formValidate();
+    const {
+        required,
+        patternEmail,
+        minLengthPassword,
+        validateEmpty,
+        validateEquals,
+    } = formValidate();
     const { user } = useUserContext();
     if (user) {
         return <h2>Loading app...</h2>;
@@ -35,16 +42,15 @@ const Register = () => {
             });
             navigate("/");
         } catch (error) {
-            console.log(error.code);
+            // console.log(error.code);
             const { code, message } = errorsFirebase(error.code);
             setError(code, { message });
         }
     };
 
     return (
-        <>
-            <h2>Sign Up</h2>
-
+        <main>
+            <FormTitle title="Sign Up" />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <FormInput
                     type="email"
@@ -53,6 +59,8 @@ const Register = () => {
                         required,
                         pattern: patternEmail,
                     })}
+                    label="Your Email"
+                    error={errors?.email}
                 >
                     <FormError error={errors?.email} />
                 </FormInput>
@@ -60,9 +68,11 @@ const Register = () => {
                     type="password"
                     placeholder="Password *"
                     {...register("password", {
-                        minLength,
+                        minLength: minLengthPassword(6),
                         validate: validateEmpty,
                     })}
+                    label="Your Password"
+                    error={errors?.password}
                 >
                     <FormError error={errors?.password} />
                 </FormInput>
@@ -70,14 +80,16 @@ const Register = () => {
                     type="password"
                     placeholder="Password again *"
                     {...register("repassword", {
-                        validate: validateEquals(getValues),
+                        validate: validateEquals(getValues("password")),
                     })}
+                    label="Repeat Password"
+                    error={errors?.repassword}
                 >
                     <FormError error={errors?.repassword} />
                 </FormInput>
-                <button type="submit">Sign Up</button>
+                <FormButton text="Sign Up" type="submit" />
             </form>
-        </>
+        </main>
     );
 };
 

@@ -4,6 +4,7 @@ import Home from "../routes/Home";
 import Login from "../routes/Login";
 import Register from "../routes/Register";
 import RequireAuth from "../components/RequireAuth";
+import PublicLayout from "../components/PublicLayout";
 
 export const router = createBrowserRouter([
     {
@@ -19,12 +20,18 @@ export const router = createBrowserRouter([
                 ),
             },
             {
-                path: "/login",
-                element: <Login />,
-            },
-            {
-                path: "/register",
-                element: <Register />,
+                path: "/",
+                element: <PublicLayout />,
+                children: [
+                    {
+                        path: "/login",
+                        element: <Login />,
+                    },
+                    {
+                        path: "/register",
+                        element: <Register />,
+                    },
+                ],
             },
         ],
     },

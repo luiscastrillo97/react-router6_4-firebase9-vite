@@ -7,6 +7,8 @@ import { formValidate } from "../utils/formValidate";
 import { errorsFirebase } from "../utils/errorsFirebase";
 import FormInput from "../components/FormInput";
 import FormError from "../components/FormError";
+import FormTitle from "../components/FormTitle";
+import FormButton from "../components/FormButton";
 
 const Login = () => {
     const { user } = useUserContext();
@@ -14,7 +16,8 @@ const Login = () => {
         return <h2>Loading app...</h2>;
     }
     useRedirectActiveUser(user, "/");
-    const { required, patternEmail, minLength, validateEmpty } = formValidate();
+    const { required, patternEmail, minLengthPassword, validateEmpty } =
+        formValidate();
     const navigate = useNavigate();
 
     const {
@@ -32,15 +35,15 @@ const Login = () => {
             });
             navigate("/");
         } catch (error) {
-            console.log(error.code);
+            // console.log(error.code);
             const { code, message } = errorsFirebase(error.code);
             setError(code, { message });
         }
     };
 
     return (
-        <>
-            <h2>Sing In</h2>
+        <main>
+            <FormTitle title="Sign In" />
             <FormError error={errors?.firebase} />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <FormInput
@@ -50,6 +53,8 @@ const Login = () => {
                         required,
                         pattern: patternEmail,
                     })}
+                    label="Your Email"
+                    error={errors?.email}
                 >
                     <FormError error={errors?.email} />
                 </FormInput>
@@ -57,15 +62,17 @@ const Login = () => {
                     type="password"
                     placeholder="Password *"
                     {...register("password", {
-                        minLength,
+                        minLength: minLengthPassword(6),
                         validate: validateEmpty,
                     })}
+                    label="Your Password"
+                    error={errors?.password}
                 >
                     <FormError error={errors?.password} />
                 </FormInput>
-                <button type="submit">Sign In</button>
+                <FormButton text="Sign In" type="submit" />
             </form>
-        </>
+        </main>
     );
 };
 
