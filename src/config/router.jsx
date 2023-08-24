@@ -3,21 +3,25 @@ import Root from "../routes/Root";
 import Home from "../routes/Home";
 import Login from "../routes/Login";
 import Register from "../routes/Register";
-import RequireAuth from "../components/RequireAuth";
-import PublicLayout from "../components/PublicLayout";
+import RequireAuth from "../components/layouts/RequireAuth";
+import PublicLayout from "../components/layouts/PublicLayout";
+import NotFound from "../components/layouts/NotFound";
 
 export const router = createBrowserRouter([
     {
         path: "/",
         element: <Root />,
+        errorElement: <NotFound />,
         children: [
             {
-                index: true,
-                element: (
-                    <RequireAuth>
-                        <Home />
-                    </RequireAuth>
-                ),
+                path: "/",
+                element: <RequireAuth />,
+                children: [
+                    {
+                        index: true,
+                        element: <Home />,
+                    },
+                ],
             },
             {
                 path: "/",

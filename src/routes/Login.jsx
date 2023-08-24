@@ -9,9 +9,12 @@ import FormInput from "../components/FormInput";
 import FormError from "../components/FormError";
 import FormTitle from "../components/FormTitle";
 import FormButton from "../components/FormButton";
+import { useState } from "react";
+import ButtonLoading from "../components/ButtonLoading";
 
 const Login = () => {
     const { user } = useUserContext();
+    const [loading, setLoading] = useState(false);
     if (user) {
         return <h2>Loading app...</h2>;
     }
@@ -29,6 +32,7 @@ const Login = () => {
 
     const onSubmit = async ({ email, password }) => {
         try {
+            setLoading(true);
             await signInUser({
                 email,
                 password,
@@ -38,6 +42,8 @@ const Login = () => {
             // console.log(error.code);
             const { code, message } = errorsFirebase(error.code);
             setError(code, { message });
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -70,7 +76,7 @@ const Login = () => {
                 >
                     <FormError error={errors?.password} />
                 </FormInput>
-                <FormButton text="Sign In" type="submit" />
+                <FormButton text="Sign In" type="submit" loading={loading} />
             </form>
         </main>
     );

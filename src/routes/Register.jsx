@@ -20,6 +20,7 @@ const Register = () => {
         validateEquals,
     } = formValidate();
     const { user } = useUserContext();
+    const [loading, setLoading] = useState(false);
     if (user) {
         return <h2>Loading app...</h2>;
     }
@@ -36,6 +37,7 @@ const Register = () => {
 
     const onSubmit = async ({ email, password }) => {
         try {
+            setLoading(true);
             await registerUser({
                 email,
                 password,
@@ -45,6 +47,8 @@ const Register = () => {
             // console.log(error.code);
             const { code, message } = errorsFirebase(error.code);
             setError(code, { message });
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -87,7 +91,7 @@ const Register = () => {
                 >
                     <FormError error={errors?.repassword} />
                 </FormInput>
-                <FormButton text="Sign Up" type="submit" />
+                <FormButton text="Sign Up" type="submit" loading={loading} />
             </form>
         </main>
     );
