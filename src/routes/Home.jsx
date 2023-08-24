@@ -65,7 +65,7 @@ const Home = () => {
 
     return (
         <div>
-            <FormTitle title="Home" />
+            <FormTitle title="URLs Admin" />
 
             <form onSubmit={handleSubmit(onSubmit)} className="mb-4">
                 <FormInput
