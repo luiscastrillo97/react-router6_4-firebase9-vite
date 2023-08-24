@@ -10,7 +10,6 @@ import FormError from "../components/FormError";
 import FormTitle from "../components/FormTitle";
 import FormButton from "../components/FormButton";
 import { useState } from "react";
-import ButtonLoading from "../components/ButtonLoading";
 
 const Login = () => {
     const { user } = useUserContext();
@@ -19,9 +18,9 @@ const Login = () => {
         return <h2>Loading app...</h2>;
     }
     useRedirectActiveUser(user, "/");
+    const navigate = useNavigate();
     const { required, patternEmail, minLengthPassword, validateEmpty } =
         formValidate();
-    const navigate = useNavigate();
 
     const {
         register,

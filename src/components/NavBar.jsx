@@ -9,7 +9,7 @@ const NavBar = () => {
         try {
             await signOutUser();
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -26,11 +26,11 @@ const NavBar = () => {
                         Ícono
                     </span>
                 </Link>
-                <div className="hidden w-full md:block md:w-auto">
-                    <ul className="font-medium flex flex-col items-center p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white">
+                <div className="w-full sm:w-auto">
+                    <ul className="font-medium flex items-center p-4 sm:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 flex-row sm:space-x-8 sm:mt-0 sm:border-0 sm:bg-white">
                         {user ? (
                             <>
-                                <li className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0">
+                                <li className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded sm:bg-transparent sm:text-blue-700 sm:p-0">
                                     <NavLink to="/">Home</NavLink>
                                 </li>
                                 <button

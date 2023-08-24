@@ -6,6 +6,7 @@ import Register from "../routes/Register";
 import RequireAuth from "../components/layouts/RequireAuth";
 import PublicLayout from "../components/layouts/PublicLayout";
 import NotFound from "../components/layouts/NotFound";
+import LayoutRedirect from "../components/layouts/LayoutRedirect";
 
 export const router = createBrowserRouter([
     {
@@ -36,6 +37,16 @@ export const router = createBrowserRouter([
                         element: <Register />,
                     },
                 ],
+            },
+        ],
+    },
+    {
+        path: "/:nanoid",
+        element: <LayoutRedirect />,
+        children: [
+            {
+                index: true,
+                element: <NotFound />,
             },
         ],
     },

@@ -20,5 +20,9 @@ export const formValidate = () => {
                     value === valuePassword || "Passwords do not match",
             };
         },
+        patternURL: {
+            value: /^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/,
+            message: "Invalid url",
+        },
     };
 };

@@ -1,10 +1,13 @@
+import FormTitle from "../FormTitle";
 import NavBar from "../NavBar";
 
 const NotFound = () => {
     return (
         <div>
             <NavBar />
-            <main>404 Not Found</main>
+            <main className="mx-auto">
+                <FormTitle title="404 Not Found" />
+            </main>
         </div>
     );
 };
