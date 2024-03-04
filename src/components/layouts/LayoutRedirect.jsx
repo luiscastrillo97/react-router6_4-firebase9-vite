@@ -2,7 +2,6 @@ import { Outlet, useParams } from "react-router-dom";
 import { useFirestore } from "../../hooks/useFirestore";
 import { useEffect, useState } from "react";
 import FormTitle from "../FormTitle";
-import NavBar from "../NavBar";
 
 const LayoutRedirect = () => {
     const { nanoid } = useParams();
@@ -22,7 +21,7 @@ const LayoutRedirect = () => {
     if (loading) return <FormTitle title="Cargando redireccionamiento..." />;
 
     return (
-        <div className="mx-auto container">
+        <div className="mx-auto">
             <Outlet />
         </div>
     );

@@ -26,9 +26,7 @@ export const useFirestore = () => {
             const querySnapshot = await getDocs(q);
             const dataDb = querySnapshot.docs.map((doc) => doc.data());
             setData(dataDb);
-            // querySnapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
         } catch (error) {
-            // console.log(error);
             setError(error.message);
         } finally {
             setLoading((prev) => ({ ...prev, getData: false }));
@@ -48,7 +46,6 @@ export const useFirestore = () => {
             await setDoc(docRef, newDoc);
             setData([...data, newDoc]);
         } catch (error) {
-            // console.log(error);
             setError(error.message);
         } finally {
             setLoading((prev) => ({ ...prev, addData: false }));
@@ -62,7 +59,6 @@ export const useFirestore = () => {
             await deleteDoc(docRef);
             setData(data.filter((item) => item.nanoid !== nanoid));
         } catch (error) {
-            // console.log(error);
             setError(error.message);
         } finally {
             setLoading((prev) => ({ ...prev, [nanoid]: false }));
@@ -84,7 +80,6 @@ export const useFirestore = () => {
                 )
             );
         } catch (error) {
-            // console.log(error);
             setError(error.message);
         } finally {
             setLoading((prev) => ({ ...prev, updateUrl: false }));
@@ -97,7 +92,6 @@ export const useFirestore = () => {
             const docSnap = await getDoc(docRef);
             return docSnap;
         } catch (error) {
-            // console.log(error);
             setError(error.message);
         }
     };

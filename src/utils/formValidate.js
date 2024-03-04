@@ -11,7 +11,7 @@ export const formValidate = () => {
         }),
         validateEmpty: {
             empty: (value) => {
-                return !value.trim() ? "No seas 🤡, escribe algo" : true;
+                return !value.trim() ? "Required field" : true;
             },
         },
         validateEquals(valuePassword) {

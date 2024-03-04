@@ -14,9 +14,6 @@ import { useState } from "react";
 const Login = () => {
     const { user } = useUserContext();
     const [loading, setLoading] = useState(false);
-    if (user) {
-        return <h2>Loading app...</h2>;
-    }
     useRedirectActiveUser(user, "/");
     const navigate = useNavigate();
     const { required, patternEmail, minLengthPassword, validateEmpty } =
@@ -38,7 +35,6 @@ const Login = () => {
             });
             navigate("/");
         } catch (error) {
-            // console.log(error.code);
             const { code, message } = errorsFirebase(error.code);
             setError(code, { message });
         } finally {
@@ -47,7 +43,7 @@ const Login = () => {
     };
 
     return (
-        <main>
+        <section>
             <FormTitle title="Sign In" />
             <FormError error={errors?.firebase} />
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -75,9 +71,16 @@ const Login = () => {
                 >
                     <FormError error={errors?.password} />
                 </FormInput>
-                <FormButton text="Sign In" type="submit" loading={loading} />
+                <FormButton
+                    width="w-full"
+                    text="Sign In"
+                    type="submit"
+                    loading={loading}
+                >
+                    Sign In
+                </FormButton>
             </form>
-        </main>
+        </section>
     );
 };
 

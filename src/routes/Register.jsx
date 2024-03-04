@@ -21,9 +21,6 @@ const Register = () => {
     } = formValidate();
     const { user } = useUserContext();
     const [loading, setLoading] = useState(false);
-    if (user) {
-        return <h2>Loading app...</h2>;
-    }
     useRedirectActiveUser(user, "/");
     const navigate = useNavigate();
 
@@ -44,7 +41,6 @@ const Register = () => {
             });
             navigate("/");
         } catch (error) {
-            // console.log(error.code);
             const { code, message } = errorsFirebase(error.code);
             setError(code, { message });
         } finally {
@@ -53,7 +49,7 @@ const Register = () => {
     };
 
     return (
-        <main>
+        <section>
             <FormTitle title="Sign Up" />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <FormInput
@@ -91,9 +87,16 @@ const Register = () => {
                 >
                     <FormError error={errors?.repassword} />
                 </FormInput>
-                <FormButton text="Sign Up" type="submit" loading={loading} />
+                <FormButton
+                    width="w-full"
+                    text="Sign Up"
+                    type="submit"
+                    loading={loading}
+                >
+                    Sign Up
+                </FormButton>
             </form>
-        </main>
+        </section>
     );
 };
 

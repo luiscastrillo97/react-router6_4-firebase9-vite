@@ -13,7 +13,7 @@ const FormInput = forwardRef(({ ...props }, ref) => {
     } = {
         ...props,
     };
-    const labelErrorClass = `block mb-2 text-sm font-medium ${
+    const labelErrorClass = `block mb-2 text-md font-medium ${
         error
             ? "text-red-700 dark:text-red-500"
             : "text-gray-900 dark:text-white"
@@ -24,7 +24,7 @@ const FormInput = forwardRef(({ ...props }, ref) => {
             : "bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     }`;
     return (
-        <div className="mb-6">
+        <div className="mb-3">
             <label htmlFor={name} className={labelErrorClass}>
                 {label}
             </label>
