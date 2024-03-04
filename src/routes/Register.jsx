@@ -1,35 +1,41 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { registerUser } from "../config/firebase";
 import { useUserContext } from "../hooks/useUserContext";
-import { signInUser } from "../config/firebase";
 import { useRedirectActiveUser } from "../hooks/useRedirectActiveUser";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { formValidate } from "../utils/formValidate";
 import { errorsFirebase } from "../utils/errorsFirebase";
-import FormInput from "../components/FormInput";
 import FormError from "../components/FormError";
+import { formValidate } from "../utils/formValidate";
+import FormInput from "../components/FormInput";
 import FormTitle from "../components/FormTitle";
 import FormButton from "../components/FormButton";
-import { useState } from "react";
 
-const Login = () => {
+const Register = () => {
+    const {
+        required,
+        patternEmail,
+        minLengthPassword,
+        validateEmpty,
+        validateEquals,
+    } = formValidate();
     const { user } = useUserContext();
     const [loading, setLoading] = useState(false);
     useRedirectActiveUser(user, "/");
     const navigate = useNavigate();
-    const { required, patternEmail, minLengthPassword, validateEmpty } =
-        formValidate();
 
     const {
         register,
         handleSubmit,
         formState: { errors },
+        getValues,
         setError,
     } = useForm();
 
     const onSubmit = async ({ email, password }) => {
         try {
             setLoading(true);
-            await signInUser({
+            await registerUser({
                 email,
                 password,
             });
@@ -44,8 +50,7 @@ const Login = () => {
 
     return (
         <section>
-            <FormTitle title="Sign In" />
-            <FormError error={errors?.firebase} />
+            <FormTitle title="Sign Up" />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <FormInput
                     type="email"
@@ -71,17 +76,28 @@ const Login = () => {
                 >
                     <FormError error={errors?.password} />
                 </FormInput>
+                <FormInput
+                    type="password"
+                    placeholder="Password again *"
+                    {...register("repassword", {
+                        validate: validateEquals(getValues("password")),
+                    })}
+                    label="Repeat Password"
+                    error={errors?.repassword}
+                >
+                    <FormError error={errors?.repassword} />
+                </FormInput>
                 <FormButton
                     width="w-full"
-                    text="Sign In"
+                    text="Sign Up"
                     type="submit"
                     loading={loading}
                 >
-                    Sign In
+                    Sign Up
                 </FormButton>
             </form>
         </section>
     );
 };
 
-export default Login;
+export default Register;
